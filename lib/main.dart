@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:her_voice/registration/registration.dart';
+import 'package:her_voice/utils/utilities.dart';
 
 void main() => runApp(MyApp());
 
@@ -7,105 +9,579 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+      body: DefaultTabController(
+        length: 4,
+        child: TabBarView(
+            children: [
+              openPage(context),
+              registrationPage(context),
+              loginForm(context),
+              registrationForm(context),
+            ]
+        )
+      )
+    );
+  }
+
+  openPage(context){
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          SafeArea(
+              top: true,
+              child: Container()
+          ),
+          Container(
+              height: Utilities().componentHeight(50, context),
+              width: Utilities().componentWidth(100, context),
+              margin: EdgeInsets.only(
+                  top: Utilities().componentHeight(10, context),
+                  right: Utilities().componentWidth(10, context),
+                  left: Utilities().componentWidth(10, context)
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Text(
+                    "HerVoice App",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontSize: 35,
+                        color: Colors.deepPurple
+                    ),
+                  ),
+                  SizedBox(height: Utilities().componentHeight(5, context)),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        height: Utilities().componentHeight(6, context),
+                        width: Utilities().componentWidth(6, context),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Container(
+                            height: Utilities().componentWidth(5, context),
+                            width: Utilities().componentWidth(5, context),
+                            margin: EdgeInsets.only(right: Utilities().componentWidth(2, context)),
+                            color: Colors.red,
+                            child: Image.asset(
+                              'assets/images/check.png',
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: Utilities().componentHeight(6, context),
+                        width: Utilities().componentWidth(65, context),
+                        child: Text(
+                          "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum ",
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: Utilities().componentHeight(3, context)),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        height: Utilities().componentHeight(6, context),
+                        width: Utilities().componentWidth(6, context),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Container(
+                            height: Utilities().componentWidth(5, context),
+                            width: Utilities().componentWidth(5, context),
+                            margin: EdgeInsets.only(right: Utilities().componentWidth(2, context)),
+                            color: Colors.red,
+                            child: Image.asset(
+                              'assets/images/check.png',
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: Utilities().componentHeight(6, context),
+                        width: Utilities().componentWidth(65, context),
+                        child: Text(
+                          "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum ",
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: Utilities().componentHeight(3, context)),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        height: Utilities().componentWidth(3, context),
+                        width: Utilities().componentWidth(3, context),
+                        margin: EdgeInsets.only(right: Utilities().componentWidth(2, context)),
+                        color: Colors.deepPurpleAccent,
+                      ),
+                      Container(
+                        height: Utilities().componentWidth(3, context),
+                        width: Utilities().componentWidth(3, context),
+                        color: Color.fromARGB(100, 166, 161, 255),
+                      )
+                    ],
+                  )
+                ],
+              )
+          ),
+          Container(
+            height: Utilities().componentHeight(37, context),
+            width: Utilities().componentWidth(100, context),
+            color: Colors.red,
+            child: Image.asset(
+              'assets/images/research.png',
+              fit: BoxFit.fill,
+            ),
+          )
+        ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+    );
+  }
+  registrationPage(context){
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          SafeArea(
+              top: true,
+              child: Container()
+          ),
+          Container(
+              height: Utilities().componentHeight(50, context),
+              width: Utilities().componentWidth(100, context),
+              margin: EdgeInsets.only(
+                  top: Utilities().componentHeight(10, context),
+                  right: Utilities().componentWidth(10, context),
+                  left: Utilities().componentWidth(10, context)
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Text(
+                    "Manage Reviews",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontSize: 35,
+                        color: Colors.deepPurple
+                    ),
+                  ),
+                  SizedBox(height: Utilities().componentHeight(5, context)),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        height: Utilities().componentHeight(10, context),
+                        width: Utilities().componentWidth(6, context),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Container(
+                            height: Utilities().componentWidth(5, context),
+                            width: Utilities().componentWidth(5, context),
+                            margin: EdgeInsets.only(right: Utilities().componentWidth(2, context)),
+                            color: Colors.red,
+                            child: Image.asset(
+                              'assets/images/check.png',
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: Utilities().componentHeight(10, context),
+                        width: Utilities().componentWidth(69, context),
+                        child: Text(
+                          "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum ",
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: Utilities().componentHeight(7, context)),
+                  Row(
+                    children: <Widget>[
+                      InkWell(
+                        onTap: (){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Registration()));
+                        },
+                        child: Container(
+                          height: Utilities().componentWidth(10, context),
+                          width: Utilities().componentWidth(35, context),
+                          margin: EdgeInsets.only(
+                              right: Utilities().componentWidth(2, context),
+                              left: Utilities().componentWidth(5, context)),
+                          color: Colors.deepPurple,
+                          child: Center(
+                            child: Text(
+                                "Registration",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: (){
+                          print("clicked");
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Registration()));
+                        },
+                        child: Container(
+                          height: Utilities().componentWidth(10, context),
+                          width: Utilities().componentWidth(35, context),
+                          color: Colors.deepPurple,
+                          child: Center(
+                            child: Row(
+                              children: <Widget>[
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      right: Utilities().componentWidth(10, context),
+                                      left: Utilities().componentWidth(5, context)),
+                                  child: Text(
+                                    "Login",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18
+                                    ),
+                                  ),
+                                ),
+                                Icon(Icons.arrow_forward, color: Colors.white,)
+                              ],
+                            )
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              )
+          ),
+          Container(
+            height: Utilities().componentHeight(37, context),
+            width: Utilities().componentWidth(100, context),
+            color: Colors.red,
+            child: Image.asset(
+              'assets/images/date.png',
+              fit: BoxFit.fill,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+  loginForm(context){
+    return Container(
+      child: SingleChildScrollView(
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+            SafeArea(
+                top: true,
+                child: Container()
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
+            Container(
+              margin: EdgeInsets.only(
+                  top: Utilities().componentHeight(15, context),
+                  left: Utilities().componentWidth(5, context)
+              ),
+              child:  Utilities().circularLogo(context),
             ),
+            Container(
+                margin: EdgeInsets.only(
+                        top: Utilities().componentHeight(10, context),
+                ),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                      width: Utilities().componentWidth(90, context),
+                      height:Utilities().componentHeight(3, context),
+                      child: Text(
+                        "USERNAME",
+                        style: TextStyle(
+                            fontSize: 16
+                        ),
+                      )
+                  ),
+                  Container(
+                    width: Utilities().componentWidth(90, context),
+                    height:Utilities().componentHeight(7, context),
+                    child: TextField(
+                      // controller: firstName,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Firstname',
+                          hintStyle: TextStyle(fontSize: 13, color: Color.fromARGB(175,181,177,255)),
+                          fillColor: Color.fromARGB(105,185,184,204),
+                          filled: true
+                      ),
+                      style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 0, 0, 0)),
+                    ),
+                  ),
+
+                  Container(
+                      width: Utilities().componentWidth(90, context),
+                      height:Utilities().componentHeight(3, context),
+                      margin: EdgeInsets.only(
+                        top: Utilities().componentHeight(3, context),
+                      ),
+                      child: Text(
+                        "PASSWORD",
+                        style: TextStyle(
+                            fontSize: 16
+                        ),
+                      )
+                  ),
+                  Container(
+                    width: Utilities().componentWidth(90, context),
+                    height:Utilities().componentHeight(7, context),
+                    child: TextField(
+                      // controller: firstName,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Password',
+                          hintStyle: TextStyle(fontSize: 13, color: Color.fromARGB(175,181,177,255)),
+                          fillColor: Color.fromARGB(105,185,184,204),
+                          filled: true
+                      ),
+                      style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 0, 0, 0)),
+                    ),
+                  ),
+
+                  Container(
+                    padding: EdgeInsets.only(right: 20, left: 20),
+                    width: Utilities().componentWidth(90, context),
+                    height:Utilities().componentHeight(7, context),
+                      margin: EdgeInsets.only(
+                        top: Utilities().componentHeight(3, context),
+                      ),
+                    color: Colors.deepPurple,
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "Login",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18
+                            ),
+                          ),
+                        ),
+                        Spacer(),
+                        Icon(Icons.arrow_forward, color: Colors.white,)
+                      ],
+                    )
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  registrationForm(context){
+    return Container(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            SafeArea(
+                top: true,
+                child: Container()
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                  top: Utilities().componentHeight(5, context),
+                  left: Utilities().componentWidth(5, context)
+              ),
+              child:  Utilities().circularLogo(context),
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                top: Utilities().componentHeight(5, context),
+              ),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                      width: Utilities().componentWidth(90, context),
+                      height:Utilities().componentHeight(3, context),
+                      child: Text(
+                        "EMAIL ADDRESS",
+                        style: TextStyle(
+                            fontSize: 16
+                        ),
+                      )
+                  ),
+                  Container(
+                    width: Utilities().componentWidth(90, context),
+                    height:Utilities().componentHeight(7, context),
+                    child: TextField(
+                      // controller: firstName,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Firstname',
+                          hintStyle: TextStyle(fontSize: 13, color: Color.fromARGB(175,181,177,255)),
+                          fillColor: Color.fromARGB(105,185,184,204),
+                          filled: true
+                      ),
+                      style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 0, 0, 0)),
+                    ),
+                  ),
+
+                  Container(
+                      width: Utilities().componentWidth(90, context),
+                      height:Utilities().componentHeight(3, context),
+                      margin: EdgeInsets.only(
+                        top: Utilities().componentHeight(3, context),
+                      ),
+                      child: Text(
+                        "USERNAME",
+                        style: TextStyle(
+                            fontSize: 16
+                        ),
+                      )
+                  ),
+                  Container(
+                    width: Utilities().componentWidth(90, context),
+                    height:Utilities().componentHeight(7, context),
+                    child: TextField(
+                      // controller: firstName,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Password',
+                          hintStyle: TextStyle(fontSize: 13, color: Color.fromARGB(175,181,177,255)),
+                          fillColor: Color.fromARGB(105,185,184,204),
+                          filled: true
+                      ),
+                      style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 0, 0, 0)),
+                    ),
+                  ),
+
+                  Container(
+                      width: Utilities().componentWidth(90, context),
+                      height:Utilities().componentHeight(3, context),
+                      child: Text(
+                        "PASSWORD",
+                        style: TextStyle(
+                            fontSize: 16
+                        ),
+                      )
+                  ),
+                  Container(
+                    width: Utilities().componentWidth(90, context),
+                    height:Utilities().componentHeight(7, context),
+                    child: TextField(
+                      // controller: firstName,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Firstname',
+                          hintStyle: TextStyle(fontSize: 13, color: Color.fromARGB(175,181,177,255)),
+                          fillColor: Color.fromARGB(105,185,184,204),
+                          filled: true
+                      ),
+                      style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 0, 0, 0)),
+                    ),
+                  ),
+
+                  Container(
+                      width: Utilities().componentWidth(90, context),
+                      height:Utilities().componentHeight(3, context),
+                      margin: EdgeInsets.only(
+                        top: Utilities().componentHeight(3, context),
+                      ),
+                      child: Text(
+                        "CONFIRM PASSWORD",
+                        style: TextStyle(
+                            fontSize: 16
+                        ),
+                      )
+                  ),
+                  Container(
+                    width: Utilities().componentWidth(90, context),
+                    height:Utilities().componentHeight(7, context),
+                    child: TextField(
+                      // controller: firstName,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Password',
+                          hintStyle: TextStyle(fontSize: 13, color: Color.fromARGB(175,181,177,255)),
+                          fillColor: Color.fromARGB(105,185,184,204),
+                          filled: true
+                      ),
+                      style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 0, 0, 0)),
+                    ),
+                  ),
+
+                  Container(
+                      padding: EdgeInsets.only(right: 20, left: 20),
+                      width: Utilities().componentWidth(90, context),
+                      height:Utilities().componentHeight(7, context),
+                      margin: EdgeInsets.only(
+                        top: Utilities().componentHeight(3, context),
+                      ),
+                      color: Colors.deepPurple,
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            child: Text(
+                              "Submit",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18
+                              ),
+                            ),
+                          ),
+                          Spacer(),
+                          Icon(Icons.arrow_forward, color: Colors.white,)
+                        ],
+                      )
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
