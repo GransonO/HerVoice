@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:her_voice/registration/registration.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:her_voice/utils/utilities.dart';
+import 'package:map_launcher/map_launcher.dart';
 
 void main() => runApp(MyApp());
 
@@ -26,6 +27,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  String page = "open";
+  String homeID = "home";
 
   @override
   Widget build(BuildContext context) {
@@ -33,23 +36,28 @@ class _MyHomePageState extends State<MyHomePage> {
       key: _scaffoldKey,
       drawer:
           navigationDrawer(context),
-      body: DefaultTabController(
-        length: 7,
-        child: TabBarView(
-            children: [
-              openPage(context),
-              registrationPage(context),
-              loginForm(context),
-              registrationForm(context),
-              homepage(context),
-              reviewsPage(context),
-              myReviews(context)
-            ]
-        )
-      )
+      body: showPage(context)
     );
   }
 
+  showPage(context){
+    switch(page){
+      case "open":
+        return DefaultTabController(
+            length: 2,
+            child: TabBarView(
+                children: [
+                  openPage(context),
+                  registrationPage(context),
+                ]
+            )
+        );
+        break;
+      case "home":
+        return theHomePage(context);
+
+    }
+  }
   openPage(context){
     return Container(
       height: MediaQuery.of(context).size.height,
@@ -244,9 +252,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: <Widget>[
                       InkWell(
                         onTap: (){
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Registration()));
+                          setState(() {
+                            homeID = "register";
+                            page = "home";
+                          });
                         },
                         child: Container(
                           height: Utilities().componentWidth(10, context),
@@ -257,10 +266,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           color: Colors.deepPurple,
                           child: Center(
                             child: Text(
-                                "Registration",
+                              "Registration",
                               style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18
+                                  color: Colors.white,
+                                  fontSize: 18
                               ),
                             ),
                           ),
@@ -268,33 +277,33 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       InkWell(
                         onTap: (){
-                          print("clicked");
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Registration()));
+                          setState(() {
+                            homeID = "login";
+                            page = "home";
+                          });
                         },
                         child: Container(
                           height: Utilities().componentWidth(10, context),
                           width: Utilities().componentWidth(35, context),
                           color: Colors.deepPurple,
                           child: Center(
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  margin: EdgeInsets.only(
-                                      right: Utilities().componentWidth(10, context),
-                                      left: Utilities().componentWidth(5, context)),
-                                  child: Text(
-                                    "Login",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18
+                              child: Row(
+                                children: <Widget>[
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                        right: Utilities().componentWidth(10, context),
+                                        left: Utilities().componentWidth(5, context)),
+                                    child: Text(
+                                      "Login",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Icon(Icons.arrow_forward, color: Colors.white,)
-                              ],
-                            )
+                                  Icon(Icons.arrow_forward, color: Colors.white,)
+                                ],
+                              )
                           ),
                         ),
                       )
@@ -316,6 +325,33 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
+  }
+  theHomePage(context){
+    switch(homeID){
+      case "register":
+        return registrationForm(context);
+        break;
+
+      case "login":
+        return loginForm(context);
+        break;
+
+      case "home":
+        return homepage(context);
+        break;
+
+      case "reviews":
+        return reviewsPage(context);
+        break;
+
+      case "my_review":
+        return myReviews(context);
+        break;
+
+      default:
+        return Container();
+        break;
+    }
   }
   loginForm(context){
     return Container(
@@ -395,29 +431,37 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
 
-                  Container(
-                    padding: EdgeInsets.only(right: 20, left: 20),
-                    width: Utilities().componentWidth(90, context),
-                    height:Utilities().componentHeight(7, context),
-                      margin: EdgeInsets.only(
-                        top: Utilities().componentHeight(3, context),
-                      ),
-                    color: Colors.deepPurple,
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          child: Text(
-                            "Login",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18
+                  InkWell(
+                    onTap: (){
+                      setState(() {
+                        homeID = "home";
+                        page = "home";
+                      });
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(right: 20, left: 20),
+                      width: Utilities().componentWidth(90, context),
+                      height:Utilities().componentHeight(7, context),
+                        margin: EdgeInsets.only(
+                          top: Utilities().componentHeight(3, context),
+                        ),
+                      color: Colors.deepPurple,
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            child: Text(
+                              "Login",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18
+                              ),
                             ),
                           ),
-                        ),
-                        Spacer(),
-                        Icon(Icons.arrow_forward, color: Colors.white,)
-                      ],
-                    )
+                          Spacer(),
+                          Icon(Icons.arrow_forward, color: Colors.white,)
+                        ],
+                      )
+                    ),
                   ),
                 ],
               ),
@@ -427,7 +471,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
   registrationForm(context){
     return Container(
       child: SingleChildScrollView(
@@ -564,29 +607,37 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
 
-                  Container(
-                      padding: EdgeInsets.only(right: 20, left: 20),
-                      width: Utilities().componentWidth(90, context),
-                      height:Utilities().componentHeight(7, context),
-                      margin: EdgeInsets.only(
-                        top: Utilities().componentHeight(3, context),
-                      ),
-                      color: Colors.deepPurple,
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            child: Text(
-                              "Submit",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18
+                  InkWell(
+                    onTap: (){
+                      setState(() {
+                        homeID = "login";
+                        page = "home";
+                      });
+                    },
+                    child: Container(
+                        padding: EdgeInsets.only(right: 20, left: 20),
+                        width: Utilities().componentWidth(90, context),
+                        height:Utilities().componentHeight(7, context),
+                        margin: EdgeInsets.only(
+                          top: Utilities().componentHeight(3, context),
+                        ),
+                        color: Colors.deepPurple,
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                              child: Text(
+                                "Submit",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18
+                                ),
                               ),
                             ),
-                          ),
-                          Spacer(),
-                          Icon(Icons.arrow_forward, color: Colors.white,)
-                        ],
-                      )
+                            Spacer(),
+                            Icon(Icons.arrow_forward, color: Colors.white,)
+                          ],
+                        )
+                    ),
                   ),
                 ],
               ),
@@ -596,6 +647,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
   homepage(context){
     return Container(
       height: Utilities().componentHeight(100, context),
@@ -730,7 +782,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           Align(
                                             alignment: Alignment.bottomLeft,
                                             child: Container(
-                                              height: Utilities().componentHeight(4.5, context),
+                                              height: Utilities().componentHeight(5, context),
                                               width: Utilities().componentWidth(55, context),
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -755,56 +807,76 @@ class _MyHomePageState extends State<MyHomePage> {
                                           ),
                                           Align(
                                             alignment: Alignment.bottomRight,
-                                            child: Container(
-                                                height: Utilities().componentWidth(7.5, context),
-                                                width: Utilities().componentWidth(35, context),
-                                                color: Colors.deepPurple,
-                                                child: Row(
-                                                  children: <Widget>[
-                                                    Container(
-                                                      width: Utilities().componentWidth(26, context),
-                                                      child: Center(
-                                                        child: Text(
-                                                          "Leave Review",
-                                                          style: TextStyle(
-                                                              color: Colors.white,
-                                                              fontSize: 14
+                                            child: InkWell(
+                                              onTap: (){
+                                                setState(() {
+                                                  homeID = "reviews";
+                                                  page = "home";
+                                                });
+                                              },
+                                              child: Container(
+                                                  height: Utilities().componentWidth(7.5, context),
+                                                  width: Utilities().componentWidth(35, context),
+                                                  color: Colors.deepPurple,
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      Container(
+                                                        width: Utilities().componentWidth(26, context),
+                                                        child: Center(
+                                                          child: Text(
+                                                            "Leave Review",
+                                                            style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontSize: 14
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    Container(
-                                                      height: Utilities().componentWidth(10, context),
-                                                      width: Utilities().componentWidth(7, context),
-                                                      margin: EdgeInsets.only(left: Utilities().componentWidth(2, context)),
-                                                      child: Center(
-                                                          child: Icon(Icons.arrow_forward, color: Colors.white,)
+                                                      Container(
+                                                        height: Utilities().componentWidth(10, context),
+                                                        width: Utilities().componentWidth(7, context),
+                                                        margin: EdgeInsets.only(left: Utilities().componentWidth(2, context)),
+                                                        child: Center(
+                                                            child: Icon(Icons.arrow_forward, color: Colors.white,)
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                )
+                                                    ],
+                                                  )
+                                              ),
                                             ),
                                           ),
                                         ],
                                       )
                                   ),
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                      top: Utilities().componentHeight(19.5, context),
-                                      left: Utilities().componentWidth(75, context),
-                                    ),
-                                    height: Utilities().componentWidth(10, context),
-                                    width: Utilities().componentWidth(10, context),
-                                    decoration: new BoxDecoration(
-                                        boxShadow: [BoxShadow(
-                                          color: Colors.grey,
-                                          blurRadius: 1.0,
-                                        )],
-                                        shape: BoxShape.circle,
-                                        image: new DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: new NetworkImage('https://res.cloudinary.com/dolwj4vkq/image/upload/v1579533109/jade/profiles/arrow.jpg')
-                                        )
+                                  InkWell(
+                                    onTap: () async {
+                                      final availableMaps = await MapLauncher.installedMaps;
+                                      print(availableMaps); // [AvailableMap { mapName: Google Maps, mapType: google }, ...]
+
+                                      await availableMaps.first.showMarker(
+                                        coords: Coords(-1.2327046,36.8767022),
+                                        title: "Garden City",
+                                        description: "Along Thika Road.",
+                                      );
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(
+                                        top: Utilities().componentHeight(19.5, context),
+                                        left: Utilities().componentWidth(75, context),
+                                      ),
+                                      height: Utilities().componentWidth(10, context),
+                                      width: Utilities().componentWidth(10, context),
+                                      decoration: new BoxDecoration(
+                                          boxShadow: [BoxShadow(
+                                            color: Colors.grey,
+                                            blurRadius: 1.0,
+                                          )],
+                                          shape: BoxShape.circle,
+                                          image: new DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: new NetworkImage('https://res.cloudinary.com/dolwj4vkq/image/upload/v1579533109/jade/profiles/arrow.jpg')
+                                          )
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -845,7 +917,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           Align(
                                             alignment: Alignment.bottomLeft,
                                             child: Container(
-                                              height: Utilities().componentHeight(4.5, context),
+                                              height: Utilities().componentHeight(5, context),
                                               width: Utilities().componentWidth(55, context),
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -870,56 +942,76 @@ class _MyHomePageState extends State<MyHomePage> {
                                           ),
                                           Align(
                                             alignment: Alignment.bottomRight,
-                                            child: Container(
-                                                height: Utilities().componentWidth(7.5, context),
-                                                width: Utilities().componentWidth(35, context),
-                                                color: Colors.deepPurple,
-                                                child: Row(
-                                                  children: <Widget>[
-                                                    Container(
-                                                      width: Utilities().componentWidth(26, context),
-                                                      child: Center(
-                                                        child: Text(
-                                                          "Leave Review",
-                                                          style: TextStyle(
-                                                              color: Colors.white,
-                                                              fontSize: 14
+                                            child: InkWell(
+                                              onTap: (){
+                                                setState(() {
+                                                  homeID = "reviews";
+                                                  page = "home";
+                                                });
+                                              },
+                                              child: Container(
+                                                  height: Utilities().componentWidth(7.5, context),
+                                                  width: Utilities().componentWidth(35, context),
+                                                  color: Colors.deepPurple,
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      Container(
+                                                        width: Utilities().componentWidth(26, context),
+                                                        child: Center(
+                                                          child: Text(
+                                                            "Leave Review",
+                                                            style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontSize: 14
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    Container(
-                                                      height: Utilities().componentWidth(10, context),
-                                                      width: Utilities().componentWidth(7, context),
-                                                      margin: EdgeInsets.only(left: Utilities().componentWidth(2, context)),
-                                                      child: Center(
-                                                          child: Icon(Icons.arrow_forward, color: Colors.white,)
+                                                      Container(
+                                                        height: Utilities().componentWidth(10, context),
+                                                        width: Utilities().componentWidth(7, context),
+                                                        margin: EdgeInsets.only(left: Utilities().componentWidth(2, context)),
+                                                        child: Center(
+                                                            child: Icon(Icons.arrow_forward, color: Colors.white,)
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                )
+                                                    ],
+                                                  )
+                                              ),
                                             ),
                                           ),
                                         ],
                                       )
                                   ),
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                      top: Utilities().componentHeight(19.5, context),
-                                      left: Utilities().componentWidth(75, context),
-                                    ),
-                                    height: Utilities().componentWidth(10, context),
-                                    width: Utilities().componentWidth(10, context),
-                                    decoration: new BoxDecoration(
-                                        boxShadow: [BoxShadow(
-                                          color: Colors.grey,
-                                          blurRadius: 1.0,
-                                        )],
-                                        shape: BoxShape.circle,
-                                        image: new DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: new NetworkImage('https://res.cloudinary.com/dolwj4vkq/image/upload/v1579533109/jade/profiles/arrow.jpg')
-                                        )
+                                  InkWell(
+                                    onTap: () async {
+                                      final availableMaps = await MapLauncher.installedMaps;
+                                      print(availableMaps); // [AvailableMap { mapName: Google Maps, mapType: google }, ...]
+
+                                      await availableMaps.first.showMarker(
+                                        coords: Coords(-1.2327046,36.8767022),
+                                        title: "Garden City",
+                                        description: "Along Thika Road.",
+                                      );
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(
+                                        top: Utilities().componentHeight(19.5, context),
+                                        left: Utilities().componentWidth(75, context),
+                                      ),
+                                      height: Utilities().componentWidth(10, context),
+                                      width: Utilities().componentWidth(10, context),
+                                      decoration: new BoxDecoration(
+                                          boxShadow: [BoxShadow(
+                                            color: Colors.grey,
+                                            blurRadius: 1.0,
+                                          )],
+                                          shape: BoxShape.circle,
+                                          image: new DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: new NetworkImage('https://res.cloudinary.com/dolwj4vkq/image/upload/v1579533109/jade/profiles/arrow.jpg')
+                                          )
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -960,7 +1052,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           Align(
                                             alignment: Alignment.bottomLeft,
                                             child: Container(
-                                              height: Utilities().componentHeight(4.5, context),
+                                              height: Utilities().componentHeight(5, context),
                                               width: Utilities().componentWidth(55, context),
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -985,56 +1077,76 @@ class _MyHomePageState extends State<MyHomePage> {
                                           ),
                                           Align(
                                             alignment: Alignment.bottomRight,
-                                            child: Container(
-                                                height: Utilities().componentWidth(7.5, context),
-                                                width: Utilities().componentWidth(35, context),
-                                                color: Colors.deepPurple,
-                                                child: Row(
-                                                  children: <Widget>[
-                                                    Container(
-                                                      width: Utilities().componentWidth(26, context),
-                                                      child: Center(
-                                                        child: Text(
-                                                          "Leave Review",
-                                                          style: TextStyle(
-                                                              color: Colors.white,
-                                                              fontSize: 14
+                                            child: InkWell(
+                                              onTap: (){
+                                                setState(() {
+                                                  homeID = "reviews";
+                                                  page = "home";
+                                                });
+                                              },
+                                              child: Container(
+                                                  height: Utilities().componentWidth(7.5, context),
+                                                  width: Utilities().componentWidth(35, context),
+                                                  color: Colors.deepPurple,
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      Container(
+                                                        width: Utilities().componentWidth(26, context),
+                                                        child: Center(
+                                                          child: Text(
+                                                            "Leave Review",
+                                                            style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontSize: 14
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    Container(
-                                                      height: Utilities().componentWidth(10, context),
-                                                      width: Utilities().componentWidth(7, context),
-                                                      margin: EdgeInsets.only(left: Utilities().componentWidth(2, context)),
-                                                      child: Center(
-                                                          child: Icon(Icons.arrow_forward, color: Colors.white,)
+                                                      Container(
+                                                        height: Utilities().componentWidth(10, context),
+                                                        width: Utilities().componentWidth(7, context),
+                                                        margin: EdgeInsets.only(left: Utilities().componentWidth(2, context)),
+                                                        child: Center(
+                                                            child: Icon(Icons.arrow_forward, color: Colors.white,)
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                )
+                                                    ],
+                                                  )
+                                              ),
                                             ),
                                           ),
                                         ],
                                       )
                                   ),
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                      top: Utilities().componentHeight(19.5, context),
-                                      left: Utilities().componentWidth(75, context),
-                                    ),
-                                    height: Utilities().componentWidth(10, context),
-                                    width: Utilities().componentWidth(10, context),
-                                    decoration: new BoxDecoration(
-                                        boxShadow: [BoxShadow(
-                                          color: Colors.grey,
-                                          blurRadius: 1.0,
-                                        )],
-                                        shape: BoxShape.circle,
-                                        image: new DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: new NetworkImage('https://res.cloudinary.com/dolwj4vkq/image/upload/v1579533109/jade/profiles/arrow.jpg')
-                                        )
+                                  InkWell(
+                                    onTap: () async {
+                                      final availableMaps = await MapLauncher.installedMaps;
+                                      print(availableMaps); // [AvailableMap { mapName: Google Maps, mapType: google }, ...]
+
+                                      await availableMaps.first.showMarker(
+                                        coords: Coords(-1.2327046,36.8767022),
+                                        title: "Garden City",
+                                        description: "Along Thika Road.",
+                                      );
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(
+                                        top: Utilities().componentHeight(19.5, context),
+                                        left: Utilities().componentWidth(75, context),
+                                      ),
+                                      height: Utilities().componentWidth(10, context),
+                                      width: Utilities().componentWidth(10, context),
+                                      decoration: new BoxDecoration(
+                                          boxShadow: [BoxShadow(
+                                            color: Colors.grey,
+                                            blurRadius: 1.0,
+                                          )],
+                                          shape: BoxShape.circle,
+                                          image: new DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: new NetworkImage('https://res.cloudinary.com/dolwj4vkq/image/upload/v1579533109/jade/profiles/arrow.jpg')
+                                          )
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -1075,7 +1187,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           Align(
                                             alignment: Alignment.bottomLeft,
                                             child: Container(
-                                              height: Utilities().componentHeight(4.5, context),
+                                              height: Utilities().componentHeight(5, context),
                                               width: Utilities().componentWidth(55, context),
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1100,56 +1212,76 @@ class _MyHomePageState extends State<MyHomePage> {
                                           ),
                                           Align(
                                             alignment: Alignment.bottomRight,
-                                            child: Container(
-                                                height: Utilities().componentWidth(7.5, context),
-                                                width: Utilities().componentWidth(35, context),
-                                                color: Colors.deepPurple,
-                                                child: Row(
-                                                  children: <Widget>[
-                                                    Container(
-                                                      width: Utilities().componentWidth(26, context),
-                                                      child: Center(
-                                                        child: Text(
-                                                          "Leave Review",
-                                                          style: TextStyle(
-                                                              color: Colors.white,
-                                                              fontSize: 14
+                                            child: InkWell(
+                                              onTap: (){
+                                                setState(() {
+                                                  homeID = "reviews";
+                                                  page = "home";
+                                                });
+                                              },
+                                              child: Container(
+                                                  height: Utilities().componentWidth(7.5, context),
+                                                  width: Utilities().componentWidth(35, context),
+                                                  color: Colors.deepPurple,
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      Container(
+                                                        width: Utilities().componentWidth(26, context),
+                                                        child: Center(
+                                                          child: Text(
+                                                            "Leave Review",
+                                                            style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontSize: 14
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    Container(
-                                                      height: Utilities().componentWidth(10, context),
-                                                      width: Utilities().componentWidth(7, context),
-                                                      margin: EdgeInsets.only(left: Utilities().componentWidth(2, context)),
-                                                      child: Center(
-                                                          child: Icon(Icons.arrow_forward, color: Colors.white,)
+                                                      Container(
+                                                        height: Utilities().componentWidth(10, context),
+                                                        width: Utilities().componentWidth(7, context),
+                                                        margin: EdgeInsets.only(left: Utilities().componentWidth(2, context)),
+                                                        child: Center(
+                                                            child: Icon(Icons.arrow_forward, color: Colors.white,)
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                )
+                                                    ],
+                                                  )
+                                              ),
                                             ),
                                           ),
                                         ],
                                       )
                                   ),
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                      top: Utilities().componentHeight(19.5, context),
-                                      left: Utilities().componentWidth(75, context),
-                                    ),
-                                    height: Utilities().componentWidth(10, context),
-                                    width: Utilities().componentWidth(10, context),
-                                    decoration: new BoxDecoration(
-                                        boxShadow: [BoxShadow(
-                                          color: Colors.grey,
-                                          blurRadius: 1.0,
-                                        )],
-                                        shape: BoxShape.circle,
-                                        image: new DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: new NetworkImage('https://res.cloudinary.com/dolwj4vkq/image/upload/v1579533109/jade/profiles/arrow.jpg')
-                                        )
+                                  InkWell(
+                                    onTap: () async {
+                                      final availableMaps = await MapLauncher.installedMaps;
+                                      print(availableMaps); // [AvailableMap { mapName: Google Maps, mapType: google }, ...]
+
+                                      await availableMaps.first.showMarker(
+                                        coords: Coords(-1.2327046,36.8767022),
+                                        title: "Garden City",
+                                        description: "Along Thika Road.",
+                                      );
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(
+                                        top: Utilities().componentHeight(19.5, context),
+                                        left: Utilities().componentWidth(75, context),
+                                      ),
+                                      height: Utilities().componentWidth(10, context),
+                                      width: Utilities().componentWidth(10, context),
+                                      decoration: new BoxDecoration(
+                                          boxShadow: [BoxShadow(
+                                            color: Colors.grey,
+                                            blurRadius: 1.0,
+                                          )],
+                                          shape: BoxShape.circle,
+                                          image: new DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: new NetworkImage('https://res.cloudinary.com/dolwj4vkq/image/upload/v1579533109/jade/profiles/arrow.jpg')
+                                          )
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -1190,7 +1322,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           Align(
                                             alignment: Alignment.bottomLeft,
                                             child: Container(
-                                              height: Utilities().componentHeight(4.5, context),
+                                              height: Utilities().componentHeight(5, context),
                                               width: Utilities().componentWidth(55, context),
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1215,56 +1347,76 @@ class _MyHomePageState extends State<MyHomePage> {
                                           ),
                                           Align(
                                             alignment: Alignment.bottomRight,
-                                            child: Container(
-                                                height: Utilities().componentWidth(7.5, context),
-                                                width: Utilities().componentWidth(35, context),
-                                                color: Colors.deepPurple,
-                                                child: Row(
-                                                  children: <Widget>[
-                                                    Container(
-                                                      width: Utilities().componentWidth(26, context),
-                                                      child: Center(
-                                                        child: Text(
-                                                          "Leave Review",
-                                                          style: TextStyle(
-                                                              color: Colors.white,
-                                                              fontSize: 14
+                                            child: InkWell(
+                                              onTap: (){
+                                                setState(() {
+                                                  homeID = "reviews";
+                                                  page = "home";
+                                                });
+                                              },
+                                              child: Container(
+                                                  height: Utilities().componentWidth(7.5, context),
+                                                  width: Utilities().componentWidth(35, context),
+                                                  color: Colors.deepPurple,
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      Container(
+                                                        width: Utilities().componentWidth(26, context),
+                                                        child: Center(
+                                                          child: Text(
+                                                            "Leave Review",
+                                                            style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontSize: 14
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    Container(
-                                                      height: Utilities().componentWidth(10, context),
-                                                      width: Utilities().componentWidth(7, context),
-                                                      margin: EdgeInsets.only(left: Utilities().componentWidth(2, context)),
-                                                      child: Center(
-                                                          child: Icon(Icons.arrow_forward, color: Colors.white,)
+                                                      Container(
+                                                        height: Utilities().componentWidth(10, context),
+                                                        width: Utilities().componentWidth(7, context),
+                                                        margin: EdgeInsets.only(left: Utilities().componentWidth(2, context)),
+                                                        child: Center(
+                                                            child: Icon(Icons.arrow_forward, color: Colors.white,)
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                )
+                                                    ],
+                                                  )
+                                              ),
                                             ),
                                           ),
                                         ],
                                       )
                                   ),
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                      top: Utilities().componentHeight(19.5, context),
-                                      left: Utilities().componentWidth(75, context),
-                                    ),
-                                    height: Utilities().componentWidth(10, context),
-                                    width: Utilities().componentWidth(10, context),
-                                    decoration: new BoxDecoration(
-                                        boxShadow: [BoxShadow(
-                                          color: Colors.grey,
-                                          blurRadius: 1.0,
-                                        )],
-                                        shape: BoxShape.circle,
-                                        image: new DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: new NetworkImage('https://res.cloudinary.com/dolwj4vkq/image/upload/v1579533109/jade/profiles/arrow.jpg')
-                                        )
+                                  InkWell(
+                                    onTap: () async {
+                                      final availableMaps = await MapLauncher.installedMaps;
+                                      print(availableMaps); // [AvailableMap { mapName: Google Maps, mapType: google }, ...]
+
+                                      await availableMaps.first.showMarker(
+                                        coords: Coords(-1.2327046,36.8767022),
+                                        title: "Garden City",
+                                        description: "Along Thika Road.",
+                                      );
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(
+                                        top: Utilities().componentHeight(19.5, context),
+                                        left: Utilities().componentWidth(75, context),
+                                      ),
+                                      height: Utilities().componentWidth(10, context),
+                                      width: Utilities().componentWidth(10, context),
+                                      decoration: new BoxDecoration(
+                                          boxShadow: [BoxShadow(
+                                            color: Colors.grey,
+                                            blurRadius: 1.0,
+                                          )],
+                                          shape: BoxShape.circle,
+                                          image: new DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: new NetworkImage('https://res.cloudinary.com/dolwj4vkq/image/upload/v1579533109/jade/profiles/arrow.jpg')
+                                          )
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -1335,18 +1487,26 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
-              Container(
-                height: Utilities().componentWidth(35, context),
-                width: Utilities().componentWidth(35, context),
-                margin: EdgeInsets.only(
-                  left:  Utilities().componentWidth(32.5, context),
-                  top: Utilities().componentHeight(22.5, context),
-                ),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: new DecorationImage(
-                    image: new ExactAssetImage('assets/images/default.jpg'),
-                    fit: BoxFit.cover,
+              InkWell(
+                onTap: (){
+                  setState(() {
+                    homeID = "home";
+                    page = "home";
+                  });
+                },
+                child: Container(
+                  height: Utilities().componentWidth(35, context),
+                  width: Utilities().componentWidth(35, context),
+                  margin: EdgeInsets.only(
+                    left:  Utilities().componentWidth(32.5, context),
+                    top: Utilities().componentHeight(22.5, context),
+                  ),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: new DecorationImage(
+                      image: new ExactAssetImage('assets/images/default.jpg'),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
@@ -1368,67 +1528,92 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Row(
               children: <Widget>[
                 Spacer(),
-                Container(
-                  height: Utilities().componentWidth(15, context),
-                  width: Utilities().componentWidth(15, context),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color.fromARGB(190,255,39,0),
-                    border: Border.all(color: Color.fromARGB(190,255,39,0),
-                        width: 3),
+                InkWell(
+                  onTap: (){
+                    showToast(1);
+                  },
+                  child: Container(
+                    height: Utilities().componentWidth(15, context),
+                    width: Utilities().componentWidth(15, context),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color.fromARGB(190,255,39,0),
+                      border: Border.all(color: Color.fromARGB(190,255,39,0),
+                          width: 3),
+                    ),
+                    child: Center(child: Text("1", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),)),
                   ),
-                  child: Center(child: Text("1", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),)),
                 ),
                 Spacer(),
-                Container(
-                  height: Utilities().componentWidth(15, context),
-                  width: Utilities().componentWidth(15, context),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                    border: Border.all(color: Color.fromARGB(150,255,39,0),
-                        width: 3),
+                InkWell(
+                  onTap: (){
+                    showToast(2);
+                  },
+                  child: Container(
+                    height: Utilities().componentWidth(15, context),
+                    width: Utilities().componentWidth(15, context),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      border: Border.all(color: Color.fromARGB(150,255,39,0),
+                          width: 3),
+                    ),
+                    child: Center(child: Text("2", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),)),
                   ),
-                  child: Center(child: Text("2", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),)),
                 ),
                 Spacer(),
-                Container(
-                  height: Utilities().componentWidth(15, context),
-                  width: Utilities().componentWidth(15, context),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                    border: Border.all(color: Color.fromARGB(100,255,39,0),
-                        width: 3),
+                InkWell(
+                  onTap: (){
+                    showToast(3);
+                  },
+                  child: Container(
+                    height: Utilities().componentWidth(15, context),
+                    width: Utilities().componentWidth(15, context),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      border: Border.all(color: Color.fromARGB(100,255,39,0),
+                          width: 3),
+                    ),
+                    child: Center(child: Text("3", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),)),
                   ),
-                  child: Center(child: Text("3", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),)),
                 ),
                 Spacer(),
-                Container(
-                  height: Utilities().componentWidth(15, context),
-                  width: Utilities().componentWidth(15, context),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                    border: Border.all(color: Color.fromARGB(120,246,188,10),
+                InkWell(
+                  onTap: (){
+                    showToast(4);
+                  },
+                  child: Container(
+                    height: Utilities().componentWidth(15, context),
+                    width: Utilities().componentWidth(15, context),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      border: Border.all(color: Color.fromARGB(120,246,188,10),
+                          width: 3
+                      ),
+                    ),
+                    child: Center(child: Text("4", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),)),
+                  ),
+                ),
+                Spacer(),
+                InkWell(
+                  onTap: (){
+                    showToast(5);
+                  },
+                  child: Container(
+                    height: Utilities().componentWidth(15, context),
+                    width: Utilities().componentWidth(15, context),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color.fromARGB(170,246,188,10),
+                      border: Border.all(
+                          color: Color.fromARGB(170,246,188,10),
                         width: 3
+                      ),
                     ),
+                    child: Center(child: Text("5", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),)),
                   ),
-                  child: Center(child: Text("4", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),)),
-                ),
-                Spacer(),
-                Container(
-                  height: Utilities().componentWidth(15, context),
-                  width: Utilities().componentWidth(15, context),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color.fromARGB(170,246,188,10),
-                    border: Border.all(
-                        color: Color.fromARGB(170,246,188,10),
-                      width: 3
-                    ),
-                  ),
-                  child: Center(child: Text("5", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),)),
                 ),
                 Spacer(),
               ],
@@ -1440,71 +1625,96 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Row(
               children: <Widget>[
                 Spacer(),
-                Container(
-                  height: Utilities().componentWidth(15, context),
-                  width: Utilities().componentWidth(15, context),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                        color: Color.fromARGB(250,246,188,10),
-                        width: 3
+                InkWell(
+                  onTap: (){
+                    showToast(6);
+                  },
+                  child: Container(
+                    height: Utilities().componentWidth(15, context),
+                    width: Utilities().componentWidth(15, context),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                          color: Color.fromARGB(250,246,188,10),
+                          width: 3
+                      ),
+                      color: Colors.white,
                     ),
-                    color: Colors.white,
+                    child: Center(child: Text("6", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),)),
                   ),
-                  child: Center(child: Text("6", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),)),
                 ),
                 Spacer(),
-                Container(
-                  height: Utilities().componentWidth(15, context),
-                  width: Utilities().componentWidth(15, context),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                    border: Border.all(
-                        color: Color.fromARGB(90, 35,189,0),
-                        width: 3
+                InkWell(
+                  onTap: (){
+                    showToast(7);
+                  },
+                  child: Container(
+                    height: Utilities().componentWidth(15, context),
+                    width: Utilities().componentWidth(15, context),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      border: Border.all(
+                          color: Color.fromARGB(90, 35,189,0),
+                          width: 3
+                      ),
                     ),
+                    child: Center(child: Text("7", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),)),
                   ),
-                  child: Center(child: Text("7", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),)),
                 ),
                 Spacer(),
-                Container(
-                  height: Utilities().componentWidth(15, context),
-                  width: Utilities().componentWidth(15, context),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                    border: Border.all(
-                        color: Color.fromARGB(120, 35,189,0),
-                        width: 3),
+                InkWell(
+                  onTap: (){
+                    showToast(8);
+                  },
+                  child: Container(
+                    height: Utilities().componentWidth(15, context),
+                    width: Utilities().componentWidth(15, context),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      border: Border.all(
+                          color: Color.fromARGB(120, 35,189,0),
+                          width: 3),
+                    ),
+                    child: Center(child: Text("8", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),)),
                   ),
-                  child: Center(child: Text("8", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),)),
                 ),
                 Spacer(),
-                Container(
-                  height: Utilities().componentWidth(15, context),
-                  width: Utilities().componentWidth(15, context),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                    border: Border.all(
-                        color: Color.fromARGB(170, 35,189,0),
-                        width: 3),
+                InkWell(
+                  onTap: (){
+                    showToast(9);
+                  },
+                  child: Container(
+                    height: Utilities().componentWidth(15, context),
+                    width: Utilities().componentWidth(15, context),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      border: Border.all(
+                          color: Color.fromARGB(170, 35,189,0),
+                          width: 3),
+                    ),
+                    child: Center(child: Text("9", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),)),
                   ),
-                  child: Center(child: Text("9", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),)),
                 ),
                 Spacer(),
-                Container(
-                  height: Utilities().componentWidth(15, context),
-                  width: Utilities().componentWidth(15, context),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color.fromARGB(180, 35,189,0),
-                    border: Border.all(
-                        color: Color.fromARGB(180, 35,189,0),
-                        width: 3),
+                InkWell(
+                  onTap: (){
+                    showToast(10);
+                  },
+                  child: Container(
+                    height: Utilities().componentWidth(15, context),
+                    width: Utilities().componentWidth(15, context),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color.fromARGB(180, 35,189,0),
+                      border: Border.all(
+                          color: Color.fromARGB(180, 35,189,0),
+                          width: 3),
+                    ),
+                    child: Center(child: Text("10", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),)),
                   ),
-                  child: Center(child: Text("10", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),)),
                 ),
                 Spacer(),
               ],
@@ -1551,34 +1761,42 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           SizedBox(height: Utilities().componentHeight(1.5, context),),
-          Container(
-              height: Utilities().componentWidth(10, context),
-              width: Utilities().componentWidth(90, context),
-              color: Colors.deepPurple,
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    width: Utilities().componentWidth(70, context),
-                    padding: EdgeInsets.only(left: Utilities().componentWidth(2, context)),
-                    child: Text(
-                      "Submit",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18
+          InkWell(
+            onTap: (){
+              setState(() {
+                homeID = "my_review";
+                page = "home";
+              });
+            },
+            child: Container(
+                height: Utilities().componentWidth(10, context),
+                width: Utilities().componentWidth(90, context),
+                color: Colors.deepPurple,
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      width: Utilities().componentWidth(70, context),
+                      padding: EdgeInsets.only(left: Utilities().componentWidth(2, context)),
+                      child: Text(
+                        "Submit",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18
+                        ),
+                        textAlign: TextAlign.left,
                       ),
-                      textAlign: TextAlign.left,
                     ),
-                  ),
-                  Container(
-                    height: Utilities().componentWidth(10, context),
-                    width: Utilities().componentWidth(7, context),
-                    margin: EdgeInsets.only(left: Utilities().componentWidth(2, context)),
-                    child: Center(
-                        child: Icon(Icons.arrow_forward, color: Colors.white,)
+                    Container(
+                      height: Utilities().componentWidth(10, context),
+                      width: Utilities().componentWidth(7, context),
+                      margin: EdgeInsets.only(left: Utilities().componentWidth(2, context)),
+                      child: Center(
+                          child: Icon(Icons.arrow_forward, color: Colors.white,)
+                      ),
                     ),
-                  ),
-                ],
-              )
+                  ],
+                )
+            ),
           ),
         ],
       ),
@@ -2126,6 +2344,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
         ],
       ),
+    );
+  }
+  showToast(int number){
+    Fluttertoast.showToast(
+        msg: "Rated :" + number.toString() ,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 2,
+        backgroundColor: Colors.orange,
+        textColor: Colors.white,
+        fontSize: 16.0
     );
   }
 }
